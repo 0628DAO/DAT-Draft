@@ -1,0 +1,71 @@
+﻿DAT dApp対応方針（仮）
+
+位置付け
+これはDATのデプロイ前設計資料であり、監査前・未デプロイの暫定案です。
+現時点で既存のDATスマートコントラクトはありません。
+
+DAT固有の重要情報
+- ネットワーク：OP Mainnet（Optimism／Ethereum Layer 2）
+- Chain ID：10
+- Token Name：DAT
+- Symbol：DAT
+- 初期発行枚数：1,000,000,000 DAT
+- Decimals：18
+- TAX：0％
+- リワード／Reflection：なし
+- 追加Mint：なし
+- USPTO（米国特許商標庁）：申請準備中
+
+注意
+「USPTO申請準備中」はオフチェーン上の事業・知的財産手続に関する情報です。
+本スマートコントラクトは、USPTOへの出願済み、登録済み、権利取得済み、または認可済みであることを表しません。
+
+基本構造
+CAW、CAWELON案およびEMA案と同様に、DATのトークン本体とdAppを分離する。
+
+1. DATトークン本体
+- OP Mainnet ERC-20
+- 初期発行1,000,000,000 DAT
+- TAX 0％
+- リワード／Reflectionなし
+- 追加Mintなし
+- 自己バーンのみ
+- EIP-2612 Permit対応
+- Owner・管理者・Pause・Proxyなし
+
+2. dApp用プロトコルコントラクト
+- DATをIERC20として接続する
+- トークン移動にはOpenZeppelinのSafeERC20を使用する
+- Permit利用時はIERC20Permitで署名承認を受ける
+- dApp固有の機能、制限、更新処理はこの層へ置く
+
+3. フロントエンド
+- OP Mainnet対応ウォレット接続
+- DAT残高表示
+- Permit署名または通常のApprove
+- dApp用コントラクトの操作
+- GitHub上のソース、監査状況、デプロイ先を明示する
+
+分離する理由
+- dAppを追加してもDAT本体を再発行する必要がない
+- TAXやReflectionによる残高の予期しない変化がない
+- トークン本体の攻撃面を小さくできる
+- dApp単位で監査・停止・更新方針を設計できる
+- ウォレット、DEX、OP Mainnet Etherscanとの標準互換性を保ちやすい
+
+デプロイ前に確定する事項
+- 初期発行分の受取ウォレット
+- 配布・流動性・保有割当の基準
+- 固定制限をトークン本体へ入れるか、dApp側で扱うか
+- オンチェーン投票・委任にERC20Votesを採用するか
+- 第三者監査とOP Sepoliaでのテスト方法
+- USPTO手続の進行に応じた公開表記
+
+未採用
+- トークン本体へのdApp固有ロジックの埋め込み
+- 売買TAX
+- 保有者への自動リワード
+- Reflection
+- DEXペア判定
+- マーケティングウォレットへの自動分配
+- 後発Mint
