@@ -22,8 +22,10 @@ import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20P
  * - No owner, administrator, pause, upgrade or proxy authority
  * - dApp-specific logic remains in separate protocol contracts
  *
- * USPTO application preparation is an off-chain project matter and is not
- * represented as an on-chain right, registration or guarantee in this code.
+ * A U.S. provisional patent application concerning DAT's original technology
+ * was officially received by the USPTO as Application No. 64/141,929.
+ * This filing is not represented as an on-chain right, patent grant,
+ * registration, approval, or guarantee.
  *
  * Not audited. Not deployed.
  */
@@ -47,7 +49,7 @@ contract DAT_Draft is ERC20, ERC20Permit {
     /**
      * @notice Permanently destroys DAT owned by the caller.
      * @dev No burnFrom function is provided, so nobody can burn another
-     *      holder's DAT, including through an allowance.
+     * holder's DAT, including through an allowance.
      */
     function burn(uint256 amount) external {
         _burn(_msgSender(), amount);
