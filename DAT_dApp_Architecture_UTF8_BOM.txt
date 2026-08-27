@@ -1,71 +1,90 @@
-﻿DAT dApp対応方針（仮）
+DAT dApp Architecture Principles (Provisional)
 
-位置付け
-これはDATのデプロイ前設計資料であり、監査前・未デプロイの暫定案です。
-現時点で既存のDATスマートコントラクトはありません。
+Positioning
 
-DAT固有の重要情報
-- ネットワーク：OP Mainnet（Optimism／Ethereum Layer 2）
-- Chain ID：10
-- Token Name：DAT
-- Symbol：DAT
-- 初期発行枚数：1,000,000,000 DAT
-- Decimals：18
-- TAX：0％
-- リワード／Reflection：なし
-- 追加Mint：なし
-- USPTO（米国特許商標庁）：申請準備中
+This document describes the pre-deployment architecture for DAT.
+It is a provisional, unaudited, and undeployed design.
+No official DAT smart contract has been deployed.
 
-注意
-「USPTO申請準備中」はオフチェーン上の事業・知的財産手続に関する情報です。
-本スマートコントラクトは、USPTOへの出願済み、登録済み、権利取得済み、または認可済みであることを表しません。
+Core DAT Information
 
-基本構造
-CAW、CAWELON案およびEMA案と同様に、DATのトークン本体とdAppを分離する。
+- Network: OP Mainnet (Optimism / Ethereum Layer 2)
+- Chain ID: 10
+- Token Name: DAT
+- Symbol: DAT
+- Initial Supply: 1,000,000,000 DAT
+- Decimals: 18
+- Transfer / Buy / Sell Tax: 0%
+- Rewards / Reflection: None
+- Additional Minting: None
+- U.S. Provisional Patent Application No.: 64/141,929
+- Filing / Receipt Date: August 26, 2026
+- Title of Invention: Irreversible-Accumulator-Indexed Liquidity State Transition Mechanism
 
-1. DATトークン本体
+Patent Status Notice
+
+The United States Patent and Trademark Office (USPTO) has officially received
+a U.S. provisional patent application concerning DAT's original technology.
+This filing does not mean that a patent has been examined, granted, registered,
+or approved, and it does not guarantee any future patent rights.
+
+Base Architecture
+
+As with the CAWELON and EMA designs, the DAT base token is separated from
+dApp-specific protocol contracts.
+
+1. DAT Base Token
+
 - OP Mainnet ERC-20
-- 初期発行1,000,000,000 DAT
-- TAX 0％
-- リワード／Reflectionなし
-- 追加Mintなし
-- 自己バーンのみ
-- EIP-2612 Permit対応
-- Owner・管理者・Pause・Proxyなし
+- Fixed initial supply of 1,000,000,000 DAT
+- 0% transfer / buy / sell tax
+- No rewards or reflection
+- No additional minting
+- Self-burn only
+- EIP-2612 Permit support
+- No owner, administrator, pause, upgrade, or proxy authority
 
-2. dApp用プロトコルコントラクト
-- DATをIERC20として接続する
-- トークン移動にはOpenZeppelinのSafeERC20を使用する
-- Permit利用時はIERC20Permitで署名承認を受ける
-- dApp固有の機能、制限、更新処理はこの層へ置く
+2. dApp Protocol Contracts
 
-3. フロントエンド
-- OP Mainnet対応ウォレット接続
-- DAT残高表示
-- Permit署名または通常のApprove
-- dApp用コントラクトの操作
-- GitHub上のソース、監査状況、デプロイ先を明示する
+- Connect to DAT through IERC20
+- Use OpenZeppelin SafeERC20 for token transfers
+- Use IERC20Permit for signature-based approvals when Permit is enabled
+- Place dApp-specific functions, restrictions, and update procedures in this layer
+- Keep liquidity-state-transition logic separate from the base token
+- Define every state transition through explicit, reviewable rules
 
-分離する理由
-- dAppを追加してもDAT本体を再発行する必要がない
-- TAXやReflectionによる残高の予期しない変化がない
-- トークン本体の攻撃面を小さくできる
-- dApp単位で監査・停止・更新方針を設計できる
-- ウォレット、DEX、OP Mainnet Etherscanとの標準互換性を保ちやすい
+3. Frontend
 
-デプロイ前に確定する事項
-- 初期発行分の受取ウォレット
-- 配布・流動性・保有割当の基準
-- 固定制限をトークン本体へ入れるか、dApp側で扱うか
-- オンチェーン投票・委任にERC20Votesを採用するか
-- 第三者監査とOP Sepoliaでのテスト方法
-- USPTO手続の進行に応じた公開表記
+- Support wallets compatible with OP Mainnet
+- Display DAT balances
+- Support Permit signatures or standard approvals
+- Interact with the relevant dApp protocol contracts
+- Clearly disclose source code, audit status, and deployment addresses on GitHub
 
-未採用
-- トークン本体へのdApp固有ロジックの埋め込み
-- 売買TAX
-- 保有者への自動リワード
+Reasons for Separation
+
+- New dApps can be added without reissuing the DAT base token
+- A 0% tax and no-reflection design prevents unexpected balance changes
+- The attack surface of the base token remains small
+- Audit, pause, and upgrade policies can be designed independently for each dApp
+- Standard compatibility with wallets, DEXs, and OP Mainnet explorers is easier to preserve
+
+Items to Confirm Before Deployment
+
+- Wallet receiving the initial supply
+- Distribution, liquidity, and allocation rules
+- Whether any fixed restrictions belong in the base token or the dApp layer
+- Whether ERC20Votes is required for on-chain voting or delegation
+- Independent security audit procedures
+- OP Sepolia testing procedures
+- Public disclosures reflecting future USPTO developments
+
+Not Adopted in the Base Token
+
+- dApp-specific logic embedded in the token contract
+- Transfer, buy, or sell taxes
+- Automatic holder rewards
 - Reflection
-- DEXペア判定
-- マーケティングウォレットへの自動分配
-- 後発Mint
+- DEX-pair detection
+- Automatic distribution to a marketing wallet
+- Post-deployment minting
