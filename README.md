@@ -1,104 +1,91 @@
-README.md
+# DAT — Provisional Draft
 
+**Status:** U.S. Provisional Patent Application Filed / Not Audited / Not Deployed  
+**Intended Network:** OP Mainnet (Optimism / Ethereum Layer 2)  
+**Maintainer:** 0628DAO
 
-DAT — Provisional Draft
-Status: Draft / Not audited / Not deployed
-Intended network: OP Mainnet (Optimism / Ethereum Layer 2)
-Maintainer: 0628DAO
+This repository contains the provisional public materials for DAT's future deployment, including an ERC-20 smart contract draft and a separated dApp architecture. DAT is being researched and designed as foundational infrastructure for machine-to-machine settlement, including AI-agent transactions, and autonomous liquidity mechanisms.
 
-DATの将来のデプロイに向けた、ERC-20スマートコントラクトとdApp構成の暫定公開資料です。DATは現在、AIエージェント間取引を含む機械的決済と、自律的な流動性機構を支える基盤トークンとして研究・設計を進めています。
+The repository is public to make the pre-deployment design and validation process transparent. No official DAT smart contract has been deployed. All code currently published here is an unaudited draft.
 
-このリポジトリは、デプロイ前の設計・検証過程を透明化するために公開しています。現時点で既存のDATスマートコントラクトはなく、掲載コードは監査前のドラフトです。
+## Current Positioning
 
-現在の位置付け
-DATは、過去に検討していた「DeAffiliate／分散型アフィリエイト用トークン」という定義から移行しています。現在のREADMEおよび本リポジトリでは、その旧定義をDATの現行目的として採用しません。
+DAT has moved beyond its former definition as a token for “DeAffiliate” or decentralized affiliate marketing. That former positioning is not the current purpose of DAT and is not used as its definition in this repository.
 
-0628DAOはトークン名ではなく、複数の専門知性と人間の最終責任を組み合わせるガバナンス構想です。DATはその統治対象の一つであり、0628DAOそのものではありません。
+0628DAO is not a token name. It is a governance concept that combines multiple specialized intelligences with final human responsibility. DAT is one of the systems governed under that concept; DAT is not 0628DAO itself.
 
-固有仕様
-項目	内容
-Token Name	DAT
-Symbol	DAT
-Network	OP Mainnet
-Chain ID	10
-規格	ERC-20
-初期発行量	1,000,000,000 DAT
-Decimals	18
-Transfer / Buy / Sell TAX	0%
-Rewards / Reflection	なし
-追加Mint	なし
-Burn	保有者本人による自己Burnのみ
-Permit	EIP-2612対応
-Owner / Admin / Pause / Upgrade / Proxy	なし
-研究中のプロトコル構想
-DATでは、トークン本体と将来のプロトコルを分離します。現在研究している対象には、次の要素が含まれます。
+## Core Token Specifications
 
-AIエージェントを含む機械的取引主体の決済
+| Item | Specification |
+|---|---|
+| Token Name | DAT |
+| Symbol | DAT |
+| Network | OP Mainnet |
+| Chain ID | 10 |
+| Standard | ERC-20 |
+| Initial Supply | 1,000,000,000 DAT |
+| Decimals | 18 |
+| Transfer / Buy / Sell Tax | 0% |
+| Rewards / Reflection | None |
+| Additional Minting | None |
+| Burn | Self-burn by the token holder only |
+| Permit | EIP-2612 |
+| Owner / Admin / Pause / Upgrade / Proxy | None |
 
-取引時に転送額を減額しない、0％トランスファータックス
+## Protocol Concepts Under Research
 
-外部管理者の裁量に依存しない、事前定義された状態遷移
+DAT separates the base token from the future protocol layer. Current research includes:
 
-累積指標に応じた流動性パラメータの一方向遷移
+- Settlement for machine-driven participants, including AI agents
+- A 0% transfer-tax model that does not reduce the transferred amount
+- Predefined state transitions that do not depend on discretionary intervention by an external administrator
+- One-way transitions of liquidity parameters indexed to cumulative metrics
+- Separation of the base token from AMM, hook, and liquidity-management logic
 
-トークン本体とAMM・フック・流動性管理ロジックの分離
+The current `DAT_Draft.sol` is a foundational fixed-supply ERC-20 draft. The proposed AMM, hook, liquidity-state-transition, and AI-agent settlement mechanisms are not yet implemented in this file. They will be published separately after implementation, testing, and security review.
 
-ただし、現在の DAT_Draft.sol は固定供給ERC-20の基礎ドラフトです。上記のAMM、フック、流動性状態遷移およびAIエージェント向け決済機構は、このファイルにはまだ実装されていません。実装、テスト、監査が完了した段階で別途公開します。
+## U.S. Provisional Patent Application
 
-USPTOに関する表記
-DATに関して、USPTO（米国特許商標庁）への申請準備を進めています。
+A U.S. provisional patent application concerning DAT's original technology was officially received by the United States Patent and Trademark Office (USPTO), and an application number was assigned.
 
-「申請準備中」はオフチェーン上の事業・知的財産手続に関する現状説明です。USPTOへの出願済み、審査中、登録済み、権利取得済み、承認済み、または将来の登録を保証する意味ではありません。出願前の技術内容を保護するため、明細書、請求範囲候補および未公開の実装詳細は本READMEへ掲載しません。進捗に応じて本表記を更新します。
+- **U.S. Provisional Patent Application No.:** 64/141,929
+- **Filing / Receipt Date:** August 26, 2026
+- **Title of Invention:** Irreversible-Accumulator-Indexed Liquidity State Transition Mechanism
 
-設計方針
-トークン本体は標準的で小さなERC-20実装に保つ
+This statement confirms receipt of a U.S. provisional patent application. It does not mean that a patent has been examined, granted, registered, or approved, and it does not guarantee any future patent rights. Unpublished implementation details, the specification, and potential claim scope are not included in this README.
 
-dApp固有の機能は別のプロトコルコントラクトへ分離する
+## Design Principles
 
-dAppからは IERC20 / IERC20Permit として接続する
+- Keep the base token implementation small and standards-based
+- Place dApp-specific functions in separate protocol contracts
+- Connect through `IERC20` and `IERC20Permit`
+- Use OpenZeppelin `SafeERC20` for token transfers
+- Do not embed taxes, reflection, automatic distribution, or DEX-pair detection in the base token
+- Do not provide any post-deployment minting path
 
-トークン移動にはOpenZeppelin SafeERC20 の利用を前提とする
+## Repository Contents
 
-TAX、Reflection、自動分配、DEXペア判定をトークン本体へ埋め込まない
+- `DAT_Draft.sol` — Provisional ERC-20 smart contract
+- `DAT_dApp_Architecture_UTF8_BOM.txt` — dApp integration principles and pre-deployment considerations
 
-後発Mint経路を設けない
+## Items to Complete Before Deployment
 
-リポジトリの内容
-DAT_Draft.sol — 暫定ERC-20スマートコントラクト
+- Confirm the wallet receiving the initial supply
+- Define distribution, liquidity, and allocation rules
+- Decide whether any restrictions belong in the base token or the dApp layer
+- Determine whether `ERC20Votes` is required
+- Test on OP Sepolia
+- Complete an independent security audit
+- Publish the official deployment address
+- Update the USPTO status statement when appropriate
+- Implement and verify the connection between the protocol layer and the base token
 
-DAT_dApp_Architecture_UTF8_BOM.txt — dApp対応方針とデプロイ前の検討事項
+## Important Notices
 
-デプロイ前に確定・実施する事項
-初期発行分の受取ウォレット
-
-配布・流動性・保有割当の基準
-
-制限機能を本体またはdApp側のどちらへ置くか
-
-ERC20Votes 採用の要否
-
-OP Sepoliaでのテスト
-
-第三者によるセキュリティ監査
-
-正式なデプロイアドレスの公開
-
-USPTO手続の進捗に応じた表記更新
-
-プロトコル層の実装と基礎トークンとの接続検証
-
-重要事項
-本コードは監査前・未デプロイです。
-
-現時点で公式コントラクトアドレスはありません。
-
-本リポジトリは、トークンの販売、投資勧誘、利益または価格上昇の保証を目的とするものではありません。
-
-ウォレット接続や送金を行う前に、将来公式に告知されるネットワークとコントラクトアドレスを必ず照合してください。
-
-仕様は検証・監査・法務確認およびUSPTO手続の進行により変更される場合があります。
-
-English summary
-This repository contains a provisional OP Mainnet ERC-20 contract and a separated protocol/dApp architecture for DAT. DAT is now being researched as infrastructure for machine-to-machine settlement, including AI-agent transactions, and autonomous liquidity mechanisms; the former DeAffiliate positioning is not the current definition. The base token draft specifies a fixed supply of 1,000,000,000 DAT, 18 decimals, 0% transfer/buy/sell tax, no rewards or reflection, no later minting, self-burn only, and EIP-2612 Permit. The proposed AMM, hook, and liquidity-state-transition mechanisms are not yet implemented in DAT_Draft.sol. USPTO application preparation is an off-chain project matter and does not mean that an application has been filed, examined, registered, or approved. The code has not been audited or deployed and is not an offer or promise of returns.
+- The code is unaudited and undeployed.
+- No official contract address currently exists.
+- This repository is not an offer to sell tokens, an investment solicitation, or a promise of profit or price appreciation.
+- Before connecting a wallet or transferring tokens, verify the network and contract address through future official announcements.
+- Specifications may change following testing, auditing, legal review, or further USPTO procedures.
 
 © 0628DAO. Development record for technical review.
